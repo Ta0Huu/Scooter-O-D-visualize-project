@@ -30,7 +30,7 @@ void draw() {
   background(255);
   tripDataSet.updateTrips(currentDate, timeline.currentMinute);
   Trip[] trips = tripDataSet.display_trips;
-  map3d.display(trips);
+  map3d.display(trips, timeline.currentMinute);
   hint(DISABLE_DEPTH_TEST); 
   fill(150);
   noStroke();
