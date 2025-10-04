@@ -31,8 +31,8 @@ void draw() {
   //   line(trips[i].startx, trips[i].starty, trips[i].endx, trips[i].endy);
   // }
 
-  timeline.update();
   timeline.display();
+  timeline.update();
   // noLoop(); 
 }
 

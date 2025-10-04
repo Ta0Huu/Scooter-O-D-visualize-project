@@ -30,11 +30,9 @@ class Timeline {
     }
 
     void display() {
-        // เส้นหลัก
         stroke(0);
         line(x, y, x + width, y);
 
-        // ขีดเวลา 0–24
         for (int i = 0; i < timeMarkersPositons.length; i++) {
             float posX = x + timeMarkersPositons[i];
             line(posX, y - 5, posX, y + 5);
@@ -43,7 +41,6 @@ class Timeline {
             text(i, posX, y + 8);
         }
 
-        // จุดเวลาปัจจุบัน
         float posX = x + (currentMinute / 1440.0) * width; 
         fill(255, 0, 0);
         noStroke();
@@ -54,11 +51,11 @@ class Timeline {
         if (mx >= x && mx <= x + width && abs(my - y) <= 10) {
             float ratio = (mx - x) / width;  // 0.0–1.0
             currentMinute = ratio * 1440;   // map กลับเป็นนาที
+            currentMinute = floor(currentMinute / 60) * 60; 
 
-            // รีเซ็ตให้เริ่มนับจาก currentMinute
             offsetMinute = currentMinute;
             startMillis = millis();
-            autoRun = true; // ให้วิ่งต่อจากที่เลือก
+            autoRun = true; 
         }
     }
 }
