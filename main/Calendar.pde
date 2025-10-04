@@ -108,31 +108,43 @@ void display() {
   }
 }
 
-String mousePressed(int mx, int my) {
-  if (mx > x && mx < x + 20 && my > y - 35 && my < y - 15) {
-    current.add(java.util.Calendar.MONTH, -1);
-    redraw();
-  } 
-  else if (mx > x + w - 20 && mx < x + w && my > y - 35 && my < y - 15) {
-    current.add(java.util.Calendar.MONTH, 1);
-    redraw();
-  } 
-  else {
-    for (int[] cell : dayCells) {
-      int cx = cell[0], cy = cell[1], cw = cell[2], ch = cell[3], day = cell[4];
-      if (mx > cx && mx < cx + cw && my > cy && my < cy + ch) {
-        java.util.GregorianCalendar selectedCal = new java.util.GregorianCalendar(
-          current.get(java.util.Calendar.YEAR),
-          current.get(java.util.Calendar.MONTH),
-          day
-        );
-
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-        String dateStr = fmt.format(selectedCal.getTime());
-        return dateStr;
+  String mousePressed(int mx, int my) {
+    if (mx > x && mx < x + 20 && my > y - 35 && my < y - 15) {
+      java.util.Calendar prevMonth = (java.util.Calendar) current.clone();
+      prevMonth.add(java.util.Calendar.MONTH, -1);
+      
+      prevMonth.set(java.util.Calendar.DAY_OF_MONTH, prevMonth.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
+      if (!prevMonth.before(startCal)) {
+        current.add(java.util.Calendar.MONTH, -1);
+        redraw();
+      }
+    } 
+    else if (mx > x + w - 20 && mx < x + w && my > y - 35 && my < y - 15) {
+      java.util.Calendar nextMonth = (java.util.Calendar) current.clone();
+      nextMonth.add(java.util.Calendar.MONTH, 1);
+      
+      nextMonth.set(java.util.Calendar.DAY_OF_MONTH, 1);
+      if (!nextMonth.after(stopCal)) {
+        current.add(java.util.Calendar.MONTH, 1);
+        redraw();
+      }
+    } 
+    else {
+      for (int[] cell : dayCells) {
+        int cx = cell[0], cy = cell[1], cw = cell[2], ch = cell[3], day = cell[4];
+        if (mx > cx && mx < cx + cw && my > cy && my < cy + ch) {
+          java.util.GregorianCalendar selectedCal = new java.util.GregorianCalendar(
+            current.get(java.util.Calendar.YEAR),
+            current.get(java.util.Calendar.MONTH),
+            day
+          );
+        
+          SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+          return fmt.format(selectedCal.getTime());
+        }
       }
     }
+    return null;
   }
-  return null;
-}
+
 }
