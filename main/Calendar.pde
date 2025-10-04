@@ -3,9 +3,10 @@ import java.util.*;
 
 class CalendarView {
   int x, y, w, h;
-  java.util.Calendar current;
-  java.util.Calendar startCal;
-  java.util.Calendar stopCal;
+  java.util.Calendar current;      // เดือนที่แสดง
+  java.util.Calendar startCal;     // ขอบเขตเริ่ม
+  java.util.Calendar stopCal;      // ขอบเขตสิ้นสุด
+  java.util.Calendar currentDate;  // วันที่เลือกปัจจุบัน
   ArrayList<int[]> dayCells = new ArrayList<int[]>();
 
   CalendarView(int x, int y, int w, int h, String startDate, String stopDate) {
@@ -29,122 +30,144 @@ class CalendarView {
       current = new java.util.GregorianCalendar();
       current.setTime(sDate);
 
+      currentDate = new java.util.GregorianCalendar();
+      currentDate.setTime(sDate); // default currentDate = startDate
+
     } catch(Exception e) {
       e.printStackTrace();
     }
   }
 
-void display() {
-  dayCells.clear();
+  void display() {
+    dayCells.clear();
 
-  int days = current.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
-  java.util.Calendar temp = (java.util.Calendar) current.clone();
-  temp.set(java.util.Calendar.DAY_OF_MONTH, 1);
-  int firstDay = (temp.get(java.util.Calendar.DAY_OF_WEEK) + 5) % 7;
-  int cellW = w / 7;
-  int cellH = h / 7;
+    int days = current.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+    java.util.Calendar temp = (java.util.Calendar) current.clone();
+    temp.set(java.util.Calendar.DAY_OF_MONTH, 1);
+    int firstDay = (temp.get(java.util.Calendar.DAY_OF_WEEK) + 5) % 7;
+    int cellW = w / 7;
+    int cellH = h / 7;
 
-  fill(#F1E7FF);
-  stroke(0);
-  strokeWeight(1);
-  rect(x - 10, y - 40, w + 20, h + 45);
-
-  SimpleDateFormat fmtHeader = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-  String header = fmtHeader.format(current.getTime());
-
-  textAlign(CENTER, CENTER);
-  fill(0);
-  text(header, x + w / 2, y - 20);
-
-  fill(200);
-  rect(x, y - 35, 20, 20);
-  fill(0);
-  text("<", x + 10, y - 25);
-
-  fill(200);
-  rect(x + w - 20, y - 35, 20, 20);
-  fill(0);
-  text(">", x + w - 10, y - 25);
-
-  String[] daysName = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-  for (int i = 0; i < 7; i++) {
-    int xpos = x + i * cellW;
-    int ypos = y;
-    fill(200);
+    fill(#F1E7FF);
     stroke(0);
-    rect(xpos, ypos, cellW, cellH);
-    fill(0);
+    strokeWeight(1);
+    rect(x - 10, y - 40, w + 20, h + 45);
+
+    SimpleDateFormat fmtHeader = new SimpleDateFormat("MMMM yyyy", Locale.US);
+    String header = fmtHeader.format(current.getTime());
+
     textAlign(CENTER, CENTER);
-    text(daysName[i], xpos + cellW / 2, ypos + cellH / 2);
-  }
+    fill(0);
+    text(header, x + w / 2, y - 20);
 
-  int d = 1;
-  int rows = 6;
-  for (int row = 1; row <= rows; row++) {
-    for (int col = 0; col < 7; col++) {
-      int xpos = x + col * cellW;
-      int ypos = y + row * cellH;
+    // ปุ่มเปลี่ยนเดือน
+    fill(200);
+    rect(x, y - 35, 20, 20);
+    fill(0);
+    text("<", x + 10, y - 25);
 
-      fill(255);
+    fill(200);
+    rect(x + w - 20, y - 35, 20, 20);
+    fill(0);
+    text(">", x + w - 10, y - 25);
+
+    String[] daysName = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    for (int i = 0; i < 7; i++) {
+      int xpos = x + i * cellW;
+      int ypos = y;
+      fill(200);
       stroke(0);
       rect(xpos, ypos, cellW, cellH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text(daysName[i], xpos + cellW / 2, ypos + cellH / 2);
+    }
 
-      if (row == 1 && col < firstDay) continue;
+    int d = 1;
+    int rows = 6;
+    for (int row = 1; row <= rows; row++) {
+      for (int col = 0; col < 7; col++) {
+        int xpos = x + col * cellW;
+        int ypos = y + row * cellH;
 
-      if (d <= days) {
-        java.util.Calendar dayCal = (java.util.Calendar) current.clone();
-        dayCal.set(java.util.Calendar.DAY_OF_MONTH, d);
+        fill(255);
+        stroke(0);
+        rect(xpos, ypos, cellW, cellH);
 
-        if (!dayCal.before(startCal) && !dayCal.after(stopCal)) {
-          fill(0);
+        if (row == 1 && col < firstDay) continue;
+
+        if (d <= days) {
+          java.util.Calendar dayCal = (java.util.Calendar) current.clone();
+          dayCal.set(java.util.Calendar.DAY_OF_MONTH, d);
+
+          if (dayCal.get(java.util.Calendar.YEAR) == currentDate.get(java.util.Calendar.YEAR)
+              && dayCal.get(java.util.Calendar.MONTH) == currentDate.get(java.util.Calendar.MONTH)
+              && dayCal.get(java.util.Calendar.DAY_OF_MONTH) == currentDate.get(java.util.Calendar.DAY_OF_MONTH)) {
+                fill(180);
+                stroke(0);
+                rect(xpos, ypos, cellW, cellH);
+
+                fill(0);
+                textAlign(LEFT, TOP);
+                text(d, xpos + 5, ypos + 5);
+          }
+          else if (!dayCal.before(startCal) && !dayCal.after(stopCal)) {
+            fill(0);
+          }
+          else {
+            fill(150);
+          }
           textAlign(LEFT, TOP);
           text(d, xpos + 5, ypos + 5);
-          dayCells.add(new int[]{xpos, ypos, cellW, cellH, d});
-        }
 
-        d++;
+          if (!dayCal.before(startCal) && !dayCal.after(stopCal)) {
+            dayCells.add(new int[]{xpos, ypos, cellW, cellH, d});
+          }
+
+          d++;
+        }
       }
     }
   }
-}
 
   String handleClick(int mx, int my) {
+    // ปุ่มเดือนก่อนหน้า
     if (mx > x && mx < x + 20 && my > y - 35 && my < y - 15) {
       java.util.Calendar prevMonth = (java.util.Calendar) current.clone();
       prevMonth.add(java.util.Calendar.MONTH, -1);
-      
+
       prevMonth.set(java.util.Calendar.DAY_OF_MONTH, prevMonth.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
       if (!prevMonth.before(startCal)) {
         current.add(java.util.Calendar.MONTH, -1);
         redraw();
       }
     } 
+    // ปุ่มเดือนถัดไป
     else if (mx > x + w - 20 && mx < x + w && my > y - 35 && my < y - 15) {
       java.util.Calendar nextMonth = (java.util.Calendar) current.clone();
       nextMonth.add(java.util.Calendar.MONTH, 1);
-      
+
       nextMonth.set(java.util.Calendar.DAY_OF_MONTH, 1);
       if (!nextMonth.after(stopCal)) {
         current.add(java.util.Calendar.MONTH, 1);
         redraw();
       }
     } 
+    // คลิกวัน
     else {
       for (int[] cell : dayCells) {
         int cx = cell[0], cy = cell[1], cw = cell[2], ch = cell[3], day = cell[4];
         if (mx > cx && mx < cx + cw && my > cy && my < cy + ch) {
-          java.util.GregorianCalendar selectedCal = new java.util.GregorianCalendar(
-            current.get(java.util.Calendar.YEAR),
-            current.get(java.util.Calendar.MONTH),
-            day
-          );
-        
+          // update currentDate
+          currentDate.set(current.get(java.util.Calendar.YEAR),
+                          current.get(java.util.Calendar.MONTH),
+                          day);
+
           SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-          return fmt.format(selectedCal.getTime());
+          return fmt.format(currentDate.getTime());
         }
       }
     }
     return null;
   }
-
 }
