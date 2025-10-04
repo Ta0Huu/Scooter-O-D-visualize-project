@@ -154,6 +154,11 @@ class Timeline {
                 speedStr += key;
             } else if (key == ENTER || key == RETURN) {
                 float newSpeed = 1;
+                // หยุด: เก็บ offsetMinute ปัจจุบัน
+                float elapsedSec = (millis() - startMillis) / 1000.0;
+                offsetMinute += map(elapsedSec, 0, (period_min / speed) * 60, 0, 1440);
+                offsetMinute %= 1440;
+                autoRun = false;
                 try {
                     newSpeed = Float.parseFloat(speedStr);
                 } catch (Exception e) {
@@ -162,7 +167,9 @@ class Timeline {
                 if (newSpeed <= 0) newSpeed = 1;
                 setSpeed(newSpeed);
                 typingSpeed = false;
+                // เล่นต่อ: เริ่มจับเวลาจาก offset เดิม
                 startMillis = millis();
+                autoRun = true;
             }
         }
     }

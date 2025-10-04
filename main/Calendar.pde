@@ -108,7 +108,7 @@ void display() {
   }
 }
 
-  String mousePressed(int mx, int my) {
+  String handleClick(int mx, int my) {
     if (mx > x && mx < x + 20 && my > y - 35 && my < y - 15) {
       java.util.Calendar prevMonth = (java.util.Calendar) current.clone();
       prevMonth.add(java.util.Calendar.MONTH, -1);
