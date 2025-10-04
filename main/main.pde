@@ -1,7 +1,7 @@
 PImage mapImg;
 Map map;
 Table scooterData;
-Trip[] trips;
+TripDataSet tripDataSet;
 Timeline timeline = new Timeline(700, 50,100, 700, 1);
 
 // ขอบเขตแผนที่ (Geo bounds)
@@ -14,12 +14,8 @@ void setup() {
   size(1200, 900);
   mapImg = loadImage("data/map.png");
   map = new Map(mapImg, mapGeoLeft, mapGeoRight, mapGeoTop, mapGeoBottom, 1000, 700);
-  // scooterData = loadTable("data/ScooterData_July15_Sept27_2019.csv", "header");
-  // trips = new Trip[scooterData.getRowCount()];
-  // for(int i=0; i<trips.length; i++){
-  //   TableRow row = scooterData.getRow(i);
-  //   trips[i] = new Trip(row, map);
-  // }
+//   scooterData = loadTable("data/ScooterData_July15_Sept27_2019.csv", "header");
+//   tripDataSet = new TripDataSet(scooterData, map);
 }
 
 void draw() {
@@ -27,6 +23,8 @@ void draw() {
   map.display(0,0);
 
   // stroke(255, 0, 0, 100);
+  // tripDataSet.updateTrips("2019/07/15", timeline.currentMinute);
+  // Trip[] trips = tripDataSet.display_trips;
   // for (int i=0; i<trips.length; i++){ 
   //   line(trips[i].startx, trips[i].starty, trips[i].endx, trips[i].endy);
   // }
@@ -39,4 +37,8 @@ void draw() {
 void mousePressed() {
   timeline.handleClick(mouseX, mouseY);
   println(timeline.currentMinute);
+}
+
+void keyPressed() {
+  timeline.handleKey(key);
 }
