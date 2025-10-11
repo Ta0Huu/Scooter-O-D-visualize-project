@@ -72,8 +72,9 @@ class Dashboard {
           rect(bx, by, barW - 2, barHeight);
           fill(0);
           textAlign(CENTER, TOP);
-          text(i, bx + barW / 2, chartY + 5);
+          if((i+1)%6 == 0 || i==0) text(i, bx + barW / 2, chartY + 5);
       }
+      
   }
 
 }

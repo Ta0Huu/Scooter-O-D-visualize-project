@@ -48,10 +48,10 @@ class CalendarView {
     int cellW = w / 7;
     int cellH = h / 7;
 
-    fill(#F1E7FF);
-    stroke(0);
-    strokeWeight(1);
-    rect(x - 10, y - 40, w + 20, h + 45);
+    // fill(#F1E7FF);
+    // stroke(0);
+    // strokeWeight(1);
+    // rect(x - 10, y - 40, w + 20, h + 45);
 
     SimpleDateFormat fmtHeader = new SimpleDateFormat("MMMM yyyy", Locale.US);
     String header = fmtHeader.format(current.getTime());

@@ -8,6 +8,7 @@ CalendarView calendar;
 String currentDate;
 Dashboard dashboard;
 Heatmap heatmap;
+PFont lexendFont;
 
 float mapGeoLeft   = -114.45432823016655;
 float mapGeoRight  = -113.73701666983344;
@@ -16,27 +17,31 @@ float mapGeoBottom = 50.84975609376225;
 
 void setup() {
   size(1500, 900, P3D);
+  smooth();
+  lexendFont = createFont("Lexend-Regular.ttf", 16); // ขนาด 20 หรือปรับตามต้องการ
+  textFont(lexendFont);
   mapImg = loadImage("data/map.png");
   map = new Map(mapImg, mapGeoLeft, mapGeoRight, mapGeoTop, mapGeoBottom, 1000, 700);
   scooterData = loadTable("data/ScooterData_July15_Sept27_2019.csv", "header");
   tripDataSet = new TripDataSet(scooterData, map);
   String first_date = tripDataSet.trips[0].start_date;
   String last_date = tripDataSet.trips[tripDataSet.trips.length-1].start_date;
-  calendar = new CalendarView(40, 70, 270, 200, first_date, last_date);
+  calendar = new CalendarView(40, 60, 270, 200, first_date, last_date);
   currentDate = first_date;
   map3d = new Map3D(420, 50, map);
-  heatmap = new Heatmap(40, 280, 270, 270, map, tripDataSet);
+  heatmap = new Heatmap(40, 270, 270, 200, map, tripDataSet);
   dashboard = new Dashboard(40, 620, 270, 250, tripDataSet);
 
 }
 
 void draw() {
-  background(255);
+  background(#f4f5f6);
+  textFont(lexendFont);
   tripDataSet.updateTrips(currentDate, timeline.currentMinute);
   Trip[] trips = tripDataSet.display_trips;
   map3d.display(trips, timeline.currentMinute);
   hint(DISABLE_DEPTH_TEST); 
-  fill(150);
+  fill(#ffffff);
   noStroke();
   rect(0,0,350,900);
   heatmap.display(currentDate, timeline.currentMinute);
