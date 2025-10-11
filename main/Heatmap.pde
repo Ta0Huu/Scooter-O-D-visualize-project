@@ -1,5 +1,5 @@
 class Heatmap {
-  Map map;         
+  Map map;
   TripDataSet data;
   float x, y;
   float w, h;
@@ -16,6 +16,7 @@ class Heatmap {
   }
 
   void display(String currentDate, float currentMinute){
+
       image(map.img, x, y, w, h); 
 
       int cols = int(w / gridSize);
@@ -81,6 +82,14 @@ class Heatmap {
   }
 
   void drawButtons() {
+    fill(0);
+    textAlign(CENTER, BOTTOM);
+    if (mode.equals("start")) {
+        text("Map: Pick up of scooter", x + w/2, y - 5);
+    } else {
+        text("Map: Drop off of scooter", x + w/2, y - 5);
+    }
+
       float btnW = w / 2 - 5;
       float btnH = 28;
       float by = y + h + 10;
@@ -90,14 +99,14 @@ class Heatmap {
       rect(x, by, btnW, btnH, 5);
       fill(0);
       textAlign(CENTER, CENTER);
-      text("Start", x + btnW/2, by + btnH/2);
+      text("Pick up", x + btnW/2, by + btnH/2);
 
       if (mode.equals("end")) fill(255, 150, 150);
       else fill(220);
       rect(x + btnW + 10, by, btnW, btnH, 5);
       fill(0);
       textAlign(CENTER, CENTER);
-      text("End", x + btnW + 10 + btnW/2, by + btnH/2);
+      text("Drop off", x + btnW + 10 + btnW/2, by + btnH/2);
   }
 
   void handleClick(float mx, float my) {
