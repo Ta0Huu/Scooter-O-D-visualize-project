@@ -55,6 +55,7 @@ void draw() {
 
 void mousePressed() {
   String clickDate = calendar.handleClick(mouseX, mouseY);
+  heatmap.handleClick(mouseX, mouseY);
   if(clickDate != null) {
     currentDate = clickDate;
   }
