@@ -32,11 +32,11 @@ class Timeline {
 
         // ช่อง speed อยู่หลังเส้น timeline
         this.speedBoxX = x + width + 80;
-        this.speedBoxY = y - speedBoxH / 2;
+        this.speedBoxY = y - speedBoxH / 2 + 5;
 
         // ปุ่ม play อยู่หน้าเส้น timeline
-        this.playBtnX = x - 40;
-        this.playBtnY = y - playBtnSize / 2;
+        this.playBtnX = x - 44;
+        this.playBtnY = y - playBtnSize / 2 ;
     }
 
     void update() {
@@ -48,24 +48,28 @@ class Timeline {
     }
 
     void display() {
+        pushStyle();
         // เส้น timeline
-        stroke(0);
+        strokeWeight(3);
+        stroke(#2abed5);
         line(x, y, x + width, y);
 
         // markers ชั่วโมง
         for (int i = 0; i < timeMarkersPositons.length; i++) {
             float posX = x + timeMarkersPositons[i];
-            line(posX, y - 5, posX, y + 5);
+            line(posX, y - 8, posX, y + 8);
             fill(0);
             textAlign(CENTER, TOP);
-            text(i, posX, y + 8);
+            text(i, posX, y + 10);
         }
 
         // จุดแดงแสดงเวลา
         float posX = x + (currentMinute / 1440.0) * width; 
         fill(#D52A68);
         noStroke();
-        ellipse(posX, y, 10, 10); 
+        ellipse(posX, y, 15, 15); 
+
+        popStyle();
 
         // ปุ่ม play/pause
         displayPlayButton();
@@ -75,18 +79,20 @@ class Timeline {
     }
 
     void displayPlayButton() {
-        stroke(0);
-        fill(240);
-        rect(playBtnX, playBtnY, playBtnSize, playBtnSize, 5);
-        fill(0);
         if (autoRun) {
-            // รูปสี่เหลี่ยมคู่ (pause)
-            rect(playBtnX + 6, playBtnY + 5, 4, 15);
-            rect(playBtnX + 14, playBtnY + 5, 4, 15);
-        } else {
-            // รูปสามเหลี่ยม (play)
-            triangle(playBtnX + 7, playBtnY + 5, playBtnX + 7, playBtnY + 20, playBtnX + 18, playBtnY + 12);
-        }
+        // Pause icon
+        fill(#D5972A);
+        rect(playBtnX + 8, playBtnY + 6, 6, 20);
+        rect(playBtnX + 18, playBtnY + 6, 6, 20);
+    } else {
+        // Play icon
+        fill(#D52A68);
+        triangle(
+            playBtnX + 9,  playBtnY + 6,  
+            playBtnX + 9,  playBtnY + 26,  
+            playBtnX + 26, playBtnY + 16  
+        );
+    }
     }
 
     void displaySpeedInput() {
@@ -95,7 +101,7 @@ class Timeline {
         text("Speed:", speedBoxX - 60, speedBoxY + speedBoxH / 2);
 
         fill(typingSpeed ? color(255, 255, 200) : 240);
-        stroke(0);
+        stroke(#D52A68);
         rect(speedBoxX, speedBoxY, speedBoxW, speedBoxH, 5);
 
         fill(0);

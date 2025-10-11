@@ -34,11 +34,12 @@ class Dashboard {
   void display(String date, float currentMinute) {
       fill(240);
       stroke(200);
-      rect(x, y, w, h);
+      rect(x, y, w, h,20);
       fill(0);
       textAlign(CENTER, BOTTOM);
-      text("Trip count per hour (" + date + ")", x + w / 2, y - 5);
-
+      textSize(20);
+      text("Trip count per hour", x + w / 2, y - 10);
+      textSize(16);
       float maxCount = 1;
       for (int i = 0; i < 24; i++) if (hourlyCounts[i] > maxCount) maxCount = hourlyCounts[i];
 

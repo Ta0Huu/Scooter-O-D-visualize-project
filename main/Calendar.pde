@@ -53,7 +53,6 @@ class CalendarView {
     String header = fmtHeader.format(current.getTime());
 
     textAlign(CENTER, CENTER);
-    // fill(#D5972A);
     fill(0);
     textSize(20);
     text(header, x + w / 2, y - 20);

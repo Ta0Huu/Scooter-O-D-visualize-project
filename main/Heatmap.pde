@@ -4,7 +4,7 @@ class Heatmap {
   float x, y;
   float w, h;
   int gridSize = 5;
-  String mode = "end";
+  String mode = "start";
 
   Heatmap(float x, float y, float w, float h, Map map, TripDataSet data){
       this.x = x;
@@ -82,31 +82,37 @@ class Heatmap {
   }
 
   void drawButtons() {
+    pushStyle();
     fill(0);
     textAlign(CENTER, BOTTOM);
     if (mode.equals("start")) {
-        text("Map: Pick up of scooter", x + w/2, y - 5);
+        textSize(20);
+        text("Map: Pick up of scooter", x + w/2, y - 10);
     } else {
-        text("Map: Drop off of scooter", x + w/2, y - 5);
+        textSize(20);
+        text("Map: Drop off of scooter", x + w/2, y - 10);
     }
-
+      textSize(16);
       float btnW = w / 2 - 5;
-      float btnH = 28;
-      float by = y + h + 10;
+      float btnH = 40;
+      float by = y + h + 15;
 
-      if (mode.equals("start")) fill(100, 220, 100);
+      if (mode.equals("start")) fill(#D5972A);
       else fill(220);
-      rect(x, by, btnW, btnH, 5);
-      fill(0);
+      rect(x, by, btnW, btnH, 20);
+      if (mode.equals("start")) fill(255);
+      else fill(0);
       textAlign(CENTER, CENTER);
       text("Pick up", x + btnW/2, by + btnH/2);
 
-      if (mode.equals("end")) fill(255, 150, 150);
+      if (mode.equals("end")) fill(#D52A68);
       else fill(220);
-      rect(x + btnW + 10, by, btnW, btnH, 5);
-      fill(0);
+      rect(x + btnW + 10, by, btnW, btnH, 20);
+      if (mode.equals("end")) fill(255);
+      else fill(0);
       textAlign(CENTER, CENTER);
       text("Drop off", x + btnW + 10 + btnW/2, by + btnH/2);
+      popStyle();
   }
 
   void handleClick(float mx, float my) {
