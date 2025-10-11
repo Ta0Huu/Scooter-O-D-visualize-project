@@ -39,6 +39,7 @@ class CalendarView {
   }
 
   void display() {
+    pushStyle(); 
     dayCells.clear();
 
     int days = current.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
@@ -48,37 +49,42 @@ class CalendarView {
     int cellW = w / 7;
     int cellH = h / 7;
 
-    // fill(#F1E7FF);
-    // stroke(0);
-    // strokeWeight(1);
-    // rect(x - 10, y - 40, w + 20, h + 45);
-
     SimpleDateFormat fmtHeader = new SimpleDateFormat("MMMM yyyy", Locale.US);
     String header = fmtHeader.format(current.getTime());
 
     textAlign(CENTER, CENTER);
+    // fill(#D5972A);
     fill(0);
+    textSize(20);
     text(header, x + w / 2, y - 20);
 
-    // ปุ่มเปลี่ยนเดือน
-    fill(200);
-    rect(x, y - 35, 20, 20);
-    fill(0);
-    text("<", x + 10, y - 25);
+    fill(#D52A68);
+    textSize(28);
+    text("<", x + 15, y - 25);
 
-    fill(200);
-    rect(x + w - 20, y - 35, 20, 20);
-    fill(0);
-    text(">", x + w - 10, y - 25);
+    fill(#D52A68);
+    textSize(28);
+    text(">", x + w - 15, y - 25);
 
-    String[] daysName = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    textSize(16);
+
+    noStroke();
+
+    String[] daysName = {"M", "Tu", "W", "Th", "F", "S", "S"};
     for (int i = 0; i < 7; i++) {
       int xpos = x + i * cellW;
       int ypos = y;
-      fill(200);
-      stroke(0);
-      rect(xpos, ypos, cellW, cellH);
-      fill(0);
+      fill(#2abed5);
+      if (i == 0) {
+        // ซ้ายสุด มนขอบบนซ้ายและล่างซ้าย
+        rect(xpos, ypos, cellW, cellH, 20, 0, 0, 20);
+      } else if (i == 6) {
+        // ขวาสุด มนขอบบนขวาและล่างขวา
+        rect(xpos, ypos, cellW, cellH, 0, 20, 20, 0);
+      } else {
+        rect(xpos, ypos, cellW, cellH);
+      }
+      fill(255);
       textAlign(CENTER, CENTER);
       text(daysName[i], xpos + cellW / 2, ypos + cellH / 2);
     }
@@ -91,7 +97,6 @@ class CalendarView {
         int ypos = y + row * cellH;
 
         fill(255);
-        stroke(0);
         rect(xpos, ypos, cellW, cellH);
 
         if (row == 1 && col < firstDay) continue;
@@ -103,22 +108,21 @@ class CalendarView {
           if (dayCal.get(java.util.Calendar.YEAR) == currentDate.get(java.util.Calendar.YEAR)
               && dayCal.get(java.util.Calendar.MONTH) == currentDate.get(java.util.Calendar.MONTH)
               && dayCal.get(java.util.Calendar.DAY_OF_MONTH) == currentDate.get(java.util.Calendar.DAY_OF_MONTH)) {
-                fill(180);
-                stroke(0);
-                rect(xpos, ypos, cellW, cellH);
+                fill(#D52A68);
+                rect(xpos, ypos, cellW, cellH,20);
 
-                fill(0);
-                textAlign(LEFT, TOP);
-                text(d, xpos + 5, ypos + 5);
+                fill(255);
+                textAlign(CENTER, CENTER);
+                text(d, xpos + cellW / 2, ypos + cellH / 2);
           }
           else if (!dayCal.before(startCal) && !dayCal.after(stopCal)) {
-            fill(0);
+            fill(#2abed5);
           }
           else {
-            fill(150);
+            fill(#2abed5, 80);
           }
-          textAlign(LEFT, TOP);
-          text(d, xpos + 5, ypos + 5);
+          textAlign(CENTER, CENTER);
+          text(d,  xpos + cellW / 2, ypos + cellH / 2);
 
           if (!dayCal.before(startCal) && !dayCal.after(stopCal)) {
             dayCells.add(new int[]{xpos, ypos, cellW, cellH, d});
@@ -128,6 +132,7 @@ class CalendarView {
         }
       }
     }
+    popStyle();   
   }
 
   String handleClick(int mx, int my) {

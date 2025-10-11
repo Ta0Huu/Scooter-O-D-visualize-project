@@ -63,7 +63,7 @@ class Timeline {
 
         // จุดแดงแสดงเวลา
         float posX = x + (currentMinute / 1440.0) * width; 
-        fill(255, 0, 0);
+        fill(#D52A68);
         noStroke();
         ellipse(posX, y, 10, 10); 
 
