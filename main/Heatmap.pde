@@ -4,7 +4,7 @@ class Heatmap {
   float x, y;
   float w, h;
   int gridSize = 5;
-  String mode = "end";
+  String mode = "end"; // สามารถตั้งเป็น "start" หรือ "end" ถ้าต้องการ logic ต่างกัน
 
   Heatmap(float x, float y, float w, float h, Map map, TripDataSet data){
       this.x = x;
@@ -24,17 +24,15 @@ class Heatmap {
 
       for (Trip t : data.trips) {
           if (!t.start_date.equals(currentDate)) continue;
-          float tripStart = t.start_hour * 60;
-          if (tripStart > currentMinute) continue;
 
-          float px, py;
-          if (mode.equals("start")) {
-              px = t.startx * (w / map.w);
-              py = t.starty * (h / map.h);
-          } else {
-              px = t.endx * (w / map.w);
-              py = t.endy * (h / map.h);
-          }
+          float tripStart = t.start_hour * 60;
+          float tripEnd = tripStart + t.trip_duration_min;
+
+          if (currentMinute < tripStart) continue;
+          float progress = constrain(map(currentMinute, tripStart, tripEnd, 0, 1), 0, 1);
+
+          float px = lerp(t.startx, t.endx, progress) * (w / map.w);
+          float py = lerp(t.starty, t.endy, progress) * (h / map.h);
 
           int cx = int(px / gridSize);
           int cy = int(py / gridSize);
@@ -62,9 +60,7 @@ class Heatmap {
               if (density[i][j] == 0) continue;
 
               float val = pow(density[i][j] / maxDensity, 0.5);
-
               int c = lerpColor(color(0, 255, 0), color(255, 0, 0), val*3);
-
               int alpha = int(80 + 175 * val);
               heatLayer.fill(c, alpha);
 
@@ -77,40 +73,5 @@ class Heatmap {
 
       heatLayer.endDraw();
       image(heatLayer, x, y);
-
-      drawButtons();
-  }
-
-  void drawButtons() {
-      float btnW = w / 2 - 5;
-      float btnH = 28;
-      float by = y + h + 10;
-
-      if (mode.equals("start")) fill(100, 220, 100);
-      else fill(220);
-      rect(x, by, btnW, btnH, 5);
-      fill(0);
-      textAlign(CENTER, CENTER);
-      text("Start", x + btnW/2, by + btnH/2);
-
-      if (mode.equals("end")) fill(255, 150, 150);
-      else fill(220);
-      rect(x + btnW + 10, by, btnW, btnH, 5);
-      fill(0);
-      textAlign(CENTER, CENTER);
-      text("End", x + btnW + 10 + btnW/2, by + btnH/2);
-  }
-
-  void handleClick(float mx, float my) {
-      float btnW = w / 2 - 5;
-      float btnH = 28;
-      float by = y + h + 10;
-
-      if (mx > x && mx < x + btnW && my > by && my < by + btnH) {
-          mode = "start";
-      }
-      if (mx > x + btnW + 10 && mx < x + btnW*2 + 10 && my > by && my < by + btnH) {
-          mode = "end";
-      }
   }
 }

@@ -27,7 +27,6 @@ void setup() {
   map3d = new Map3D(420, 50, map);
   heatmap = new Heatmap(40, 280, 270, 270, map, tripDataSet);
   dashboard = new Dashboard(40, 620, 270, 250, tripDataSet);
-  dashboard.update(currentDate);
 
 }
 
@@ -41,8 +40,8 @@ void draw() {
   noStroke();
   rect(0,0,350,900);
   heatmap.display(currentDate, timeline.currentMinute);
-  dashboard.update(currentDate);
-  dashboard.display();
+  dashboard.update(currentDate, timeline.currentMinute);
+  dashboard.display(currentDate, timeline.currentMinute);
   calendar.display();
   timeline.display();
   timeline.update();
@@ -51,7 +50,6 @@ void draw() {
 
 void mousePressed() {
   String clickDate = calendar.handleClick(mouseX, mouseY);
-  heatmap.handleClick(mouseX, mouseY);
   if(clickDate != null) {
     currentDate = clickDate;
   }
