@@ -39,7 +39,7 @@ class Dashboard {
     float gap = 1;
     float chartWidth = (barW + gap) * 24;
     float chartX = x + 40;
-    float chartY = y + h - 404
+    float chartY = y + h - 404;
     float chartH = h - 60;
 
     pushMatrix();

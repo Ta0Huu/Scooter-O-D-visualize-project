@@ -6,6 +6,8 @@ TripDataSet tripDataSet;
 Timeline timeline = new Timeline(870, 50, 440 , 800, 1);
 CalendarView calendar;
 String currentDate;
+Dashboard dashboard;
+Heatmap heatmap;
 
 // ขอบเขตแผนที่ (Geo bounds)
 float mapGeoLeft   = -114.45432823016655;
@@ -24,6 +26,10 @@ void setup() {
   calendar = new CalendarView(40, 70, 270, 200, first_date, last_date);
   currentDate = first_date;
   map3d = new Map3D(420, 50, map);
+  heatmap = new Heatmap(40, 280, 270, 270, map, tripDataSet);
+  dashboard = new Dashboard(40, 620, 270, 250, tripDataSet);
+  dashboard.update(currentDate);
+
 }
 
 void draw() {
@@ -35,6 +41,9 @@ void draw() {
   fill(150);
   noStroke();
   rect(0,0,350,900);
+  heatmap.display(currentDate, timeline.currentMinute);
+  dashboard.update(currentDate);
+  dashboard.display();
   calendar.display();
   timeline.display();
   timeline.update();
@@ -44,6 +53,7 @@ void draw() {
 
 void mousePressed() {
   String clickDate = calendar.handleClick(mouseX, mouseY);
+  heatmap.handleClick(mouseX, mouseY);
   if(clickDate != null) {
     currentDate = clickDate;
   }
@@ -57,5 +67,5 @@ void keyPressed() {
 
 void mouseWheel(MouseEvent event) {
     float e = event.getCount();
-    map3d.zoomMap(e * 30); // ปรับค่าความเร็วซูม
+    map3d.zoomMap(e * 30);
 }
