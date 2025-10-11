@@ -68,7 +68,7 @@ class Dashboard {
           float bx = chartX + i * barW;
           float by = chartY - barHeight;
 
-          fill(100, 150, 255);
+          fill(#2abed5);
           rect(bx, by, barW - 2, barHeight);
           fill(0);
           textAlign(CENTER, TOP);

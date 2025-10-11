@@ -92,7 +92,7 @@ class Timeline {
     void displaySpeedInput() {
         fill(0);
         textAlign(LEFT, CENTER);
-        text("Speed:", speedBoxX - 45, speedBoxY + speedBoxH / 2);
+        text("Speed:", speedBoxX - 60, speedBoxY + speedBoxH / 2);
 
         fill(typingSpeed ? color(255, 255, 200) : 240);
         stroke(0);

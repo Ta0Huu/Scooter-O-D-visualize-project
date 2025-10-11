@@ -37,7 +37,7 @@ class Map3D {
         float k = 10;               
 
         for (int i = 0; i < trips.length; i++){
-            stroke(255, 0, 0, 150);
+            stroke(#8A4F37, 150);
             strokeWeight(2);
             Trip trip = trips[i];
             float h = k * trip.trip_length_km;  
@@ -68,7 +68,7 @@ class Map3D {
             // วาด box เล็กที่ start
             pushMatrix();
             translate(trip.startx, trip.starty, 0);
-            fill(0, 255, 0); // เขียว
+            fill(#2abed5);
             noStroke();
             box(5);          // ขนาดกล่อง 5
             popMatrix();
@@ -76,7 +76,7 @@ class Map3D {
             // วาด box เล็กที่ end
             pushMatrix();
             translate(trip.endx, trip.endy, 0); // Z = 0 หรือถ้าต้องการให้ตรงปลาย parabolic ใช้ Z = h*4*0.5*0.5?
-            fill(0, 0, 255); // น้ำเงิน
+            fill(#D5412A);
             noStroke();
             box(5);
             popMatrix();
