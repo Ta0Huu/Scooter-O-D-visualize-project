@@ -9,7 +9,6 @@ String currentDate;
 Dashboard dashboard;
 Heatmap heatmap;
 
-// ขอบเขตแผนที่ (Geo bounds)
 float mapGeoLeft   = -114.45432823016655;
 float mapGeoRight  = -113.73701666983344;
 float mapGeoTop    = 51.18817976402853;
@@ -48,7 +47,6 @@ void draw() {
   timeline.display();
   timeline.update();
   hint(ENABLE_DEPTH_TEST); 
-  // noLoop(); 
 }
 
 void mousePressed() {

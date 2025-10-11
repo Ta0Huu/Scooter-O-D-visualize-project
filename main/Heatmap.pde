@@ -53,6 +53,7 @@ class Heatmap {
 
       PGraphics heatLayer = createGraphics(int(w), int(h));
       heatLayer.beginDraw();
+      heatLayer.clear();
       heatLayer.noStroke();
       heatLayer.blendMode(ADD);
 

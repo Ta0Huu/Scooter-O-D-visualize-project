@@ -1,8 +1,6 @@
 class Dashboard {
   TripDataSet data;
   float x, y, w, h;
-  float scrollX = 0;
-  float scrollSpeed = 20;
   int[] hourlyCounts = new int[24];
 
   Dashboard(float x, float y, float w, float h, TripDataSet data) {
@@ -35,19 +33,13 @@ class Dashboard {
     int maxCount = 1;
     for (int i = 0; i < 24; i++) if (hourlyCounts[i] > maxCount) maxCount = hourlyCounts[i];
 
-    float barW = 5; 
-    float gap = 1;
-    float chartWidth = (barW + gap) * 24;
+    float barW = (w - 80) / 24.0;
     float chartX = x + 40;
-    float chartY = y + h - 404;
-    float chartH = h - 60;
-
-    pushMatrix();
-    clip(int(x), int(y), int(w), int(h));
-    translate(-scrollX, 0);
+    float chartY = y + h - 40;
+    float chartH = h - 80;
 
     stroke(0);
-    line(chartX, chartY, chartX + chartWidth, chartY);
+    line(chartX, chartY, chartX + barW * 24, chartY);
     line(chartX, chartY, chartX, chartY - chartH);
 
     int numTicks = 4;
@@ -57,44 +49,21 @@ class Dashboard {
       float ty = chartY - i * (chartH / numTicks);
       float val = (maxCount / float(numTicks)) * i;
       stroke(220);
-      line(chartX, ty, chartX + chartWidth, ty);
+      line(chartX, ty, chartX + barW * 24, ty);
       noStroke();
       text(int(val), chartX - 5, ty);
     }
 
     for (int i = 0; i < 24; i++) {
       float barHeight = map(hourlyCounts[i], 0, maxCount, 0, chartH);
-      float bx = chartX + i * (barW + gap);
+      float bx = chartX + i * barW;
       float by = chartY - barHeight;
 
       fill(100, 150, 255);
-      rect(bx, by, barW, barHeight);
+      rect(bx, by, barW - 2, barHeight);
       fill(0);
       textAlign(CENTER, TOP);
       text(i, bx + barW / 2, chartY + 5);
     }
-
-    noClip();
-    popMatrix();
-
-    drawScrollbar(chartWidth);
-  }
-
-  void drawScrollbar(float contentWidth) {
-    float scrollbarY = y + h - 15;
-    float scrollbarH = 8;
-    fill(220);
-    rect(x, scrollbarY, w, scrollbarH);
-    float visibleRatio = w / contentWidth;
-    float handleW = max(visibleRatio * w, 30);
-    float handleX = x + map(scrollX, 0, max(0, contentWidth - w), 0, w - handleW);
-    fill(120);
-    rect(handleX, scrollbarY, handleW, scrollbarH, 4);
-  }
-
-  void scroll(float amt) {
-    float barW = 20, gap = 6;
-    float chartWidth = (barW + gap) * 24;
-    scrollX = constrain(scrollX + amt * scrollSpeed, 0, max(0, chartWidth - w));
   }
 }
