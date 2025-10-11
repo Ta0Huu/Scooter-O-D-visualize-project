@@ -40,6 +40,7 @@ void draw() {
   textFont(lexendFont);
   tripDataSet.updateTrips(currentDate, timeline.currentMinute);
   Trip[] trips = tripDataSet.display_trips;
+  map3d.handleDrag();
   map3d.display(trips, timeline.currentMinute);
   hint(DISABLE_DEPTH_TEST); 
   fill(#ffffff);
@@ -84,6 +85,8 @@ void drawTimelabel() {
 
 void mousePressed() {
   String clickDate = calendar.handleClick(mouseX, mouseY);
+  if(mouseButton == LEFT)  map3d.startDragLeft();
+  if(mouseButton == CENTER) map3d.startDragMiddle();
   heatmap.handleClick(mouseX, mouseY);
   if(clickDate != null) {
     currentDate = clickDate;
@@ -92,11 +95,17 @@ void mousePressed() {
   println(timeline.currentMinute);
 }
 
+void mouseReleased(){
+  map3d.endDragLeft();
+  map3d.endDragMiddle();
+}
+
 void keyPressed() {
   timeline.handleKey(key);
 }
 
 void mouseWheel(MouseEvent event) {
     float e = event.getCount();
-    map3d.zoomMap(e * 30);
+    map3d.zoomMap(e * 30, mouseX, mouseY);
+
 }
