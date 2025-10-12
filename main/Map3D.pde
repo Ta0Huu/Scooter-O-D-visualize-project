@@ -111,7 +111,7 @@ class Map3D {
   void handleDrag(){
     if(draggingLeft){
       float dx = mouseX - lastMouseX;
-      rotZ += dx * 0.01;
+      rotZ -= dx * 0.01;
       lastMouseX = mouseX;
       lastMouseY = mouseY;
     }
