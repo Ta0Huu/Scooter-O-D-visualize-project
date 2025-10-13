@@ -63,18 +63,23 @@ void drawTimelabel() {
   textAlign(RIGHT,BOTTOM);
   String timeLabel = String.format("%02d:%02d", int(timeline.currentMinute / 60), int(timeline.currentMinute % 60));
   fill(0);
-  // แปลง currentDate จาก yyyy/MM/dd เป็น dd MMMM yyyy
+
   String dateFormatted = "";
   try {
-    java.text.SimpleDateFormat inputFormat = new java.text.SimpleDateFormat("yyyy/MM/dd");
-    java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("dd MMMM yyyy");
+    java.text.SimpleDateFormat inputFormat = new java.text.SimpleDateFormat("yyyy/MM/dd", java.util.Locale.ENGLISH);
+    inputFormat.setCalendar(new java.util.GregorianCalendar()); // บังคับใช้ ค.ศ.
+
+    java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale.ENGLISH);
+    outputFormat.setCalendar(new java.util.GregorianCalendar()); // บังคับใช้ ค.ศ.
+
     java.util.Date dateObj = inputFormat.parse(currentDate);
     dateFormatted = outputFormat.format(dateObj);
   } catch(Exception e) {
     dateFormatted = currentDate;
   }
+
   textSize(48);
-  text("Calgary, Candana", 1450 , 85);
+  text("Calgary, Canada", 1450 , 85); // แก้สะกด Canada ด้วย 😄
   textSize(24);
   fill(#D5972A);
   text(dateFormatted + ", ", 1300 , 120);
@@ -82,6 +87,7 @@ void drawTimelabel() {
   text("O'clock", 1450 , 120);
   popStyle();
 }
+
 
 void mousePressed() {
   String clickDate = calendar.handleClick(mouseX, mouseY);
